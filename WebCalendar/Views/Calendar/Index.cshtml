@@ -1,0 +1,86 @@
+﻿@using WebCalendar.Models
+@model CalendarViewmodel
+@{
+    ViewBag.Title = "Index";
+}
+
+<input type="hidden" id="dayinMonth" value="@Model.DaysOfCurrentMonth" />
+<input type="hidden" id="startDay" value="@Model.StartDay" />
+<input type="hidden" id="currentMonth" value="@Model.CurrentMonth" />
+<input type="hidden" id="currentYear" value="@Model.CurrentYear" />
+
+<div id="calendar-wrapper">
+    <div class="row">
+        <div id="calendar-headerbar">
+            <div class="col-md-4">
+                   <h3>@Model.CurrentYear</h3>
+                <h3>Welcome @User.Identity.Name</h3>
+            </div>
+                <div class="col-md-4 ">
+
+                    <div class="calendarheader-nav">
+                        @using (Html.BeginForm("Index", "Calendar", FormMethod.Post))
+            {
+                            <input type="hidden" class="currentMonth" name="month" value="@Model.currentMonthDigit" />
+                            <input type="hidden" class="currentMonth" name="year" value="@Model.CurrentYear" />
+                            <input type="submit" class="calendar-buttons" name="direction" value="<" />
+                        }
+                    </div>
+                    <div class="calendarheader-nav">
+                        <p id="calendar-month">@Html.DisplayFor(o => o.CurrentMonth)</p>
+                    </div>
+
+                    <div class="calendarheader-nav">
+                        @using (Html.BeginForm("Index", "Calendar", FormMethod.Post))
+            {
+                            <input type="hidden" class="currentMonth" name="month" value="@Model.currentMonthDigit" />
+                            <input type="hidden" class="currentMonth" name="year" value="@Model.CurrentYear" />
+                            <input type="submit" class="calendar-buttons" name="direction" value=">" />
+                        }
+                    </div>
+
+                </div>
+
+            <div class="col-md-4">
+               
+            </div>
+
+            </div>
+        
+
+    </div>
+
+    <div class="row">
+        <div id="calendar-daywrapper">
+            <div class="day-header">Måndag</div>
+            <div class="day-header">Tisdag</div>
+            <div class="day-header">Onsdag</div>
+            <div class="day-header">Torsdag</div>
+            <div class="day-header">Fredag</div>
+            <div class="day-header">Lördag</div>
+            <div class="day-header">Söndag</div>
+            <div id="calendar-content">
+
+            </div>
+        </div>
+       
+        <div id="addAppointment-wrapper">
+            @*<div id="addAppointment-header">Nytt</div>*@
+        @using (Html.BeginForm("Appointment", "Calendar", FormMethod.Post))
+        {
+            <div id="app-leftcontent">
+                <p><textarea id="appointment-text" name="message"></textarea></p>
+                <input type="hidden" id="post-date" name="date" value="" />
+                <p><input type="submit" id="addAppointment" class="calendar-buttons" value="Lägg till" /> @Model.CurrentYear @Model.currentMonthDigit</p>
+            </div>
+            <div  id="app-rightcontent">
+                <div class="color-selection" id="color-selection-red">Privat</div>
+                <div class="color-selection" id="color-selection-green">Jobb</div>
+                <div class="color-selection" id="color-selection-blue">Familj</div>
+            </div>
+        
+        }
+       
+        </div>
+    </div>
+</div>

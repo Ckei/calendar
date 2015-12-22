@@ -1,0 +1,30 @@
+﻿@using WebCalendar.Models
+@model LoginViewmodel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-sm-8 col-md-7" id="login-wrapper">
+            <p>@ViewBag.Error</p>
+
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+                <p>Användarnamn:</p>
+                <p><input type="text" name="username" class="form-control" /></p>
+                <p>Lösenord:</p>
+                <p><input type="text" name="password" class="form-control" /></p>
+
+                <input type="submit" value="Logga in" />
+            }
+        </div>
+
+
+    </div>
+
+    <div>
+        <a href="@Url.Action("Register", "Home")">Registrera dig!</a>
+    </div>
+</div>
