@@ -22,10 +22,22 @@ namespace WebCalendar.Business
                 return false;
         }
 
-        public int GetUserID(string username)
+        public User GetCurrentUser(string username)
         {
-            var currentUser = db.Users.FirstOrDefault(u => u.Username == username);
-            return currentUser.UserId;
+            return db.Users.FirstOrDefault(u => u.Username == username);
+        }
+
+        public List<UserMessages> Messages(string date, User user)
+        {
+            List<UserMessages> messages = new List<UserMessages>();
+            var AllMessages = db.Appointments.Where(u => u.UserId == user.UserId && u.AppointmentDate == date);
+
+            foreach (var message in AllMessages)
+            {
+                messages.Add(new UserMessages(message.AppointmentDate,message.AppointmentMessage));
+            }
+
+            return messages;
         }
     }
 }

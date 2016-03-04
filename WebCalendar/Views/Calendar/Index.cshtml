@@ -66,11 +66,12 @@
        
         <div id="addAppointment-wrapper">
             @*<div id="addAppointment-header">Nytt</div>*@
-        @using (Html.BeginForm("Appointment", "Calendar", FormMethod.Post))
+        @using (Html.BeginForm("Appointment", "Calendar", new { CalendarViewmodel = Model }, FormMethod.Post))
         {
             <div id="app-leftcontent">
                 <p><textarea id="appointment-text" name="message"></textarea></p>
                 <input type="hidden" id="post-date" name="date" value="" />
+                <input type="hidden" id="post-model" name="model" value="@Model" />
                 <p><input type="submit" id="addAppointment" class="calendar-buttons" value="Lägg till" /> @Model.CurrentYear @Model.currentMonthDigit</p>
             </div>
             <div  id="app-rightcontent">

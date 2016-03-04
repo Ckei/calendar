@@ -8,6 +8,7 @@ namespace WebCalendar.Models
 {
     public class CalendarViewmodel
     {
+        DatabaseExtensions de = new DatabaseExtensions();
         DateTime currentDT = DateTime.Now;
 
         public int DaysOfCurrentMonth { get; set; }
@@ -16,6 +17,7 @@ namespace WebCalendar.Models
         public int StartDay { get; set; }
         public int currentMonthDigit { get; set; }
         public DateTime selectedDate { get; set; }
+        public List<UserMessages> allMessages { get; set; }
 
         public CalendarViewmodel()
         {
@@ -24,6 +26,7 @@ namespace WebCalendar.Models
             CurrentMonth = printMonth(currentDT.Month);
             currentMonthDigit = DateTime.Now.Month;
             CurrentYear = DateTime.Now.Year;
+            //allMessages = de.Messages(); TODO!
         }
 
         public CalendarViewmodel(string direction, int month, int year)

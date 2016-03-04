@@ -11,40 +11,39 @@ namespace WebCalendar.Controllers
     public class CalendarController : Controller
     {
         DatabaseExtensions dbe = new DatabaseExtensions();
+        CalendarViewmodel model = new CalendarViewmodel();
 
         // GET: Calendar
         [Authorize]
         public ActionResult Index()
         {
-            CalendarViewmodel model = new CalendarViewmodel();
-
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Index(int month, int year, string direction)
         {
-
             CalendarViewmodel model = new CalendarViewmodel(direction,month,year);
-
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Appointment(string Message, string Date)
-        {
-            string currentUser = User.Identity.Name; 
+        public ActionResult Appointment(string Message, string date)
+        {        
+            User user = dbe.GetCurrentUser(User.Identity.Name); 
             UserDatabaseEntities db = new UserDatabaseEntities();
-            if (!dbe.AppointmentExists(Date, currentUser))
+            if (!dbe.AppointmentExists(date, user.Username))
             {
                 if (ModelState.IsValid)
                 {
-                    Models.Appointment appointment = new Models.Appointment();
+                    Appointment appointment = new Appointment();
 
-                    appointment.AppointmentDate = Date;
+                    appointment.AppointmentDate = date;
                     appointment.AppointmentMessage = Message;
-                    appointment.UserId = dbe.GetUserID(currentUser);
+                    appointment.UserId = user.UserId;
+                    appointment.User = user;
 
+                    db.Appointments.Add(appointment);
                     db.SaveChanges();
                 }
          
@@ -54,7 +53,7 @@ namespace WebCalendar.Controllers
 
             }
 
-            return View("Index");
+            return View("Index",model);
         }
     }
 }

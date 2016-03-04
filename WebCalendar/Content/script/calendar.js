@@ -17,12 +17,14 @@ $(document).ready(function () {
         $(this).removeClass("hover");
     });
 
+    //Calendar popup
     $(".calendar-days").click(function () {
         selectedDate = currentYear + "/" + currentMonth + "/" + $(this).text();
         $("#post-date").val(selectedDate);
         //$(this).css("background-color", "#006666")
         //$(this).css("color", "#FFFFFF")
         var destination = $(this).offset();
+        var innerAppointmentText = $("#appointment-text").val();
         var divToShow = $("#addAppointment-wrapper");
         divToShow.css({
             color: "#454545",
@@ -32,6 +34,10 @@ $(document).ready(function () {
             top: destination.top - 140
         });
     });
+
+    //Appointment text
+
+
 
     //$("#addAppointment").click(function () {
 
