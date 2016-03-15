@@ -122,7 +122,13 @@ textarea {
 
 /***************** Appointment DIV ***************/
 
-
+#close-appointment {
+    border:none;
+    opacity:0.4;
+    position:absolute;
+    right:4px;
+    top:4px;
+}
 #appointment-text {
     min-height:60px;
     width:200px;

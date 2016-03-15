@@ -28,25 +28,21 @@ namespace WebCalendar.Controllers
         }
 
         [HttpPost]
-        public ActionResult Appointment(string Message, string date)
+        public ActionResult Appointment(Appointment app, string appButton)
         {        
             User user = dbe.GetCurrentUser(User.Identity.Name); 
-            UserDatabaseEntities db = new UserDatabaseEntities();
-            if (!dbe.AppointmentExists(date, user.Username))
+
+            if (!dbe.AppointmentExists(app.AppointmentDate, user.Username))
             {
                 if (ModelState.IsValid)
                 {
-                    Appointment appointment = new Appointment();
-
-                    appointment.AppointmentDate = date;
-                    appointment.AppointmentMessage = Message;
-                    appointment.UserId = user.UserId;
-                    appointment.User = user;
-
-                    db.Appointments.Add(appointment);
-                    db.SaveChanges();
+                    using (UserDatabaseEntities db = new UserDatabaseEntities())
+                    {
+                        app.UserId = user.UserId;
+                        db.Appointments.Add(app);
+                        db.SaveChanges();
+                    }
                 }
-         
             }
             else
             {
@@ -54,6 +50,11 @@ namespace WebCalendar.Controllers
             }
 
             return View("Index",model);
+        }
+
+        public ActionResult GetUserMessage(string selectDate)
+        {
+            return Json(dbe.Messages(selectDate, dbe.GetCurrentUser(User.Identity.Name)));
         }
     }
 }

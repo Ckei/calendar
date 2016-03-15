@@ -16,54 +16,66 @@ $(document).ready(function () {
     },function () {
         $(this).removeClass("hover");
     });
+    var divToShow = $("#addAppointment-wrapper");
 
     //Calendar popup
     $(".calendar-days").click(function () {
         selectedDate = currentYear + "/" + currentMonth + "/" + $(this).text();
+
         $("#post-date").val(selectedDate);
-        //$(this).css("background-color", "#006666")
-        //$(this).css("color", "#FFFFFF")
+        $('posted-date').val(selectedDate);
+
+        
         var destination = $(this).offset();
         var innerAppointmentText = $("#appointment-text").val();
-        var divToShow = $("#addAppointment-wrapper");
+
         divToShow.css({
             color: "#454545",
             display: "block",
             position: "absolute",
             left: destination.left,
-            top: destination.top - 140
+            top: destination.top - 190
+        });
+        var ListDiv = $("#message-list");
+        $.ajax({
+            url: "/Calendar/GetUserMessage",
+            type: "post",
+            data: { selectDate: selectedDate},
+            success: function (response) {
+                if (response != 0) {
+                    $("#create-appointment").hide();
+                    $("#edit-appointment").show();
+
+                    $.each(response, function (index, item) {
+                        $("#AppointmentMessage").val(item.Message);
+                    })
+                }
+                else {
+
+                    $("#AppointmentMessage").val('');
+                    $("#edit-appointment").hide();
+                    $("#create-appointment").show();
+                }
+            },
+            error: function()
+            {
+                alert("fel" + status);
+                
+            }
         });
     });
 
-    //Appointment text
+    $("#close-appointment").click(function () {
 
+        divToShow.css({
+            display:"none"
+        });
+    });
 
-
-    //$("#addAppointment").click(function () {
-
-    //    var message = $("#appointment-text").val();
-
-    //    $.ajax({
-    //        type: "Post",
-    //        url: "Calendar/Appointment",
-    //        contentType: "application/json; charset=utf-8",
-    //        data: {
-    //            Message: message,
-    //            Date: selectedDate
-    //        },
-    //        dataType: "json",
-    //        success: function (result) {
-    //            alert(result + "send!");
-    //        },
-    //        error: function (result) {
-    //            alert("ett fel" + result);
-    //        }
-
-    //    });
-    //});
 
 });
 
+//Create calendar
 
 function calendar() {
 

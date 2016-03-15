@@ -27,7 +27,7 @@ namespace WebCalendar.Business
             return db.Users.FirstOrDefault(u => u.Username == username);
         }
 
-        public List<UserMessages> Messages(string date, User user)
+        public IEnumerable<UserMessages> Messages(string date, User user)
         {
             List<UserMessages> messages = new List<UserMessages>();
             var AllMessages = db.Appointments.Where(u => u.UserId == user.UserId && u.AppointmentDate == date);
@@ -36,7 +36,7 @@ namespace WebCalendar.Business
             {
                 messages.Add(new UserMessages(message.AppointmentDate,message.AppointmentMessage));
             }
-
+           
             return messages;
         }
     }
