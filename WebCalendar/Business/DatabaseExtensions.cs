@@ -27,6 +27,14 @@ namespace WebCalendar.Business
             return db.Users.FirstOrDefault(u => u.Username == username);
         }
 
+        public int GetAppointmentIDByDate(string appointmentDate, User currentUser)
+        {
+            var appointment = db.Appointments.Where(a => a.AppointmentDate == appointmentDate && a.UserId == currentUser.UserId).Select(x => x.AppointmentId).FirstOrDefault();
+
+            return appointment;
+
+        }
+
         public IEnumerable<UserMessages> Messages(string date, User user)
         {
             List<UserMessages> messages = new List<UserMessages>();

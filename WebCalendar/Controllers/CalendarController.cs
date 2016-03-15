@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebCalendar.Models;
 using WebCalendar.Business;
+using System.Data.Entity;
 
 namespace WebCalendar.Controllers
 {
@@ -30,24 +31,30 @@ namespace WebCalendar.Controllers
         [HttpPost]
         public ActionResult Appointment(Appointment app, string appButton)
         {        
-            User user = dbe.GetCurrentUser(User.Identity.Name); 
+            User user = dbe.GetCurrentUser(User.Identity.Name);
 
-            if (!dbe.AppointmentExists(app.AppointmentDate, user.Username))
-            {
-                if (ModelState.IsValid)
-                {
-                    using (UserDatabaseEntities db = new UserDatabaseEntities())
+                    if (ModelState.IsValid)
                     {
-                        app.UserId = user.UserId;
-                        db.Appointments.Add(app);
-                        db.SaveChanges();
-                    }
-                }
-            }
-            else
-            {
+                        using (UserDatabaseEntities db = new UserDatabaseEntities())
+                        {
+                            if (appButton == "Create" && !dbe.AppointmentExists(app.AppointmentDate, user.Username))
+                            {
+                                app.UserId = user.UserId;
+                                db.Appointments.Add(app);
+                                db.SaveChanges();
+                            }
+                            else {
 
-            }
+                                    
+                                
+                                Appointment appoint = new Appointment();
+                                appoint = db.Appointments.Find(dbe.GetAppointmentIDByDate(app.AppointmentDate,user));
+                        db.Appointments.Attach(appoint);
+                                db.Entry(appoint).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
 
             return View("Index",model);
         }
