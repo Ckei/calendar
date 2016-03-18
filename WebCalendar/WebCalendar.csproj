@@ -106,8 +106,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\arrowleft.png" />
+    <Content Include="Content\jquery.timepicker.css" />
     <Content Include="Content\script\calendar.js" />
     <Content Include="Content\script\jquery-2.1.4.min.js" />
+    <Content Include="Content\script\jquery.timepicker.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

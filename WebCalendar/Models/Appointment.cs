@@ -19,6 +19,8 @@ namespace WebCalendar.Models
         public string AppointmentMessage { get; set; }
         public int UserId { get; set; }
         public string AppointmentColor { get; set; }
+        public Nullable<long> AppointmentStartTime { get; set; }
+        public Nullable<long> AppointmentEndTime { get; set; }
     
         public virtual User User { get; set; }
     }

@@ -7,9 +7,14 @@ var currentMonth = $(".currentMonth").val();
 var selectedDate = null;
 
 $(document).ready(function () {
+
+    //$("#app-Timestart").timepicker('getSecondsFromMidnight');
+    $("#app-Timeend").timepicker({ timeFormat: 'h:mm' }).css("z-index", 20);
+
     var currentYear = $("#currentYear").val();
 
     calendar();
+
     $("#addAppointment-wrapper").hide();
     $(".calendar-days").hover(function () {
         $(this).addClass("hover");
@@ -66,7 +71,8 @@ $(document).ready(function () {
     });
 
     $("#close-appointment").click(function () {
-
+        var ap = $("#app-Timeend").val();
+        alert(ap);
         divToShow.css({
             display:"none"
         });

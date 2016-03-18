@@ -14,6 +14,8 @@
           <Property Name="AppointmentMessage" Type="nvarchar(max)" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="AppointmentColor" Type="nchar" MaxLength="10" />
+          <Property Name="AppointmentStartTime" Type="bigint" />
+          <Property Name="AppointmentEndTime" Type="bigint" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -48,17 +50,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="UserDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Appointment">
-          <Key>
-            <PropertyRef Name="AppointmentId" />
-          </Key>
-          <Property Name="AppointmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppointmentDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="AppointmentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="AppointmentColor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Appointments" FromRole="Appointments" ToRole="Users" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -67,45 +58,47 @@
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Appointments" Relationship="Self.FK_Appointments" FromRole="Users" ToRole="Appointments" />
+          <NavigationProperty Name="Appointments" Relationship="UserDatabaseModel.FK_Appointments" FromRole="User" ToRole="Appointment" />
+        </EntityType>
+        <EntityContainer Name="UserDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Appointments" EntityType="UserDatabaseModel.Appointment" />
+          <AssociationSet Name="FK_Appointments" Association="UserDatabaseModel.FK_Appointments">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="AppointmentId" />
+          </Key>
+          <Property Name="AppointmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppointmentDate" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="AppointmentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AppointmentColor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="AppointmentStartTime" Type="Int64" />
+          <Property Name="AppointmentEndTime" Type="Int64" />
+          <NavigationProperty Name="User" Relationship="UserDatabaseModel.FK_Appointments" FromRole="Appointment" ToRole="User" />
         </EntityType>
         <Association Name="FK_Appointments">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+          <End Type="UserDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="UserDatabaseModel.Appointment" Role="Appointment" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="Appointments">
+            <Dependent Role="Appointment">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="UserDatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Appointments" EntityType="Self.Appointment" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Appointments" Association="Self.FK_Appointments">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Appointments" EntitySet="Appointments" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="UserDatabaseModelStoreContainer" CdmEntityContainer="UserDatabaseEntities">
-          <EntitySetMapping Name="Appointments">
-            <EntityTypeMapping TypeName="UserDatabaseModel.Appointment">
-              <MappingFragment StoreEntitySet="Appointments">
-                <ScalarProperty Name="AppointmentId" ColumnName="AppointmentId" />
-                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
-                <ScalarProperty Name="AppointmentMessage" ColumnName="AppointmentMessage" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AppointmentColor" ColumnName="AppointmentColor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="UserDatabaseModel.User">
               <MappingFragment StoreEntitySet="Users">
@@ -113,6 +106,19 @@
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Appointments">
+            <EntityTypeMapping TypeName="UserDatabaseModel.Appointment">
+              <MappingFragment StoreEntitySet="Appointments">
+                <ScalarProperty Name="AppointmentEndTime" ColumnName="AppointmentEndTime" />
+                <ScalarProperty Name="AppointmentStartTime" ColumnName="AppointmentStartTime" />
+                <ScalarProperty Name="AppointmentColor" ColumnName="AppointmentColor" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AppointmentMessage" ColumnName="AppointmentMessage" />
+                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+                <ScalarProperty Name="AppointmentId" ColumnName="AppointmentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -180,3 +180,13 @@ left: 30px;
      padding:2px;
      text-align:center;
 }
+
+#app-Timestart {
+    height:20px;
+    width:100px;
+}
+#app-Timeend {
+    height:20px;
+    width:100px;
+    z-index: 50000;
+}

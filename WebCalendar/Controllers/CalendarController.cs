@@ -29,7 +29,7 @@ namespace WebCalendar.Controllers
         }
 
         [HttpPost]
-        public ActionResult Appointment(Appointment app, string appButton)
+        public ActionResult Appointment(Appointment appointment, string appButton)
         {        
             User user = dbe.GetCurrentUser(User.Identity.Name);
 
@@ -37,20 +37,18 @@ namespace WebCalendar.Controllers
                     {
                         using (UserDatabaseEntities db = new UserDatabaseEntities())
                         {
-                            if (appButton == "Create" && !dbe.AppointmentExists(app.AppointmentDate, user.Username))
+                            if (appButton == "Create" && !dbe.AppointmentExists(appointment.AppointmentDate, user.Username))
                             {
-                                app.UserId = user.UserId;
-                                db.Appointments.Add(app);
+                                appointment.UserId = user.UserId;
+                                db.Appointments.Add(appointment);
                                 db.SaveChanges();
                             }
-                            else {
-
-                                    
-                                
-                                Appointment appoint = new Appointment();
-                                appoint = db.Appointments.Find(dbe.GetAppointmentIDByDate(app.AppointmentDate,user));
-                        db.Appointments.Attach(appoint);
-                                db.Entry(appoint).State = EntityState.Modified;
+                            else
+                            {
+                                Appointment newAppointment = new Appointment();
+                                newAppointment = db.Appointments.Find(dbe.GetAppointmentIDByDate(appointment.AppointmentDate,user));
+                                newAppointment.AppointmentMessage = appointment.AppointmentMessage;
+                                db.Entry(newAppointment).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
                         }

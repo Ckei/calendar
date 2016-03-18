@@ -8,14 +8,18 @@
     <div class="form-horizontal">
         <input type="button" id="close-appointment" value="X"/>
         <div id="message-list">
-
         </div>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @Html.HiddenFor(m => m.AppointmentDate, new { id = "post-date" })
         <div class="form-group">
+            <div class="col-lg-6">
 
+                @Html.TextBoxFor(model => model.AppointmentStartTime, "",  new { id = "app-Timestart" })
+            </div>
+            <div class="col-lg-6">
+                @Html.TextBoxFor(model => model.AppointmentEndTime, "", new { id = "app-Timeend" })
+            </div>
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.AppointmentMessage, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.AppointmentMessage, "", new { @class = "text-danger" })
@@ -32,5 +36,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Back to List", "Index")*@
 </div>

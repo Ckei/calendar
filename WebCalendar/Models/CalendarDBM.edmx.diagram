@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="40be209280c34bdf96005dfd024fe973" Name="Diagram1">
-        <EntityTypeShape EntityType="UserDatabaseModel.Appointment" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="UserDatabaseModel.User" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="UserDatabaseModel.FK_Appointments" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="UserDatabaseModel.Appointment" Width="1.5" PointX="4.75" PointY="3" />
+        <AssociationConnector Association="UserDatabaseModel.FK_Appointments" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
