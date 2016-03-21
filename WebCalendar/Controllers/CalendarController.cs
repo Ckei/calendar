@@ -30,31 +30,36 @@ namespace WebCalendar.Controllers
 
         [HttpPost]
         public ActionResult Appointment(Appointment appointment, string appButton)
-        {        
+        {
             User user = dbe.GetCurrentUser(User.Identity.Name);
 
-                    if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                if (model.IsAppointmentTimeFree(appointment, user.Username))
+                {
+                    using (UserDatabaseEntities db = new UserDatabaseEntities())
                     {
-                        using (UserDatabaseEntities db = new UserDatabaseEntities())
+
+                        if (appButton == "Create" && !dbe.AppointmentExists(appointment.AppointmentDate, user.Username))
                         {
-                            if (appButton == "Create" && !dbe.AppointmentExists(appointment.AppointmentDate, user.Username))
-                            {
-                                appointment.UserId = user.UserId;
-                                db.Appointments.Add(appointment);
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                Appointment newAppointment = new Appointment();
-                                newAppointment = db.Appointments.Find(dbe.GetAppointmentIDByDate(appointment.AppointmentDate,user));
-                                newAppointment.AppointmentMessage = appointment.AppointmentMessage;
-                                db.Entry(newAppointment).State = EntityState.Modified;
-                                db.SaveChanges();
-                            }
+                            appointment.UserId = user.UserId;
+                            db.Appointments.Add(appointment);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            Appointment newAppointment = new Appointment();
+                            newAppointment = db.Appointments.Find(dbe.GetAppointmentIDByDate(appointment.AppointmentDate, user));
+                            newAppointment.AppointmentMessage = appointment.AppointmentMessage;
+                            db.Entry(newAppointment).State = EntityState.Modified;
+                            db.SaveChanges();
                         }
                     }
+                }
 
-            return View("Index",model);
+            }
+
+            return View("Index", model);
         }
 
         public ActionResult GetUserMessage(string selectDate)

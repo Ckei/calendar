@@ -8,8 +8,8 @@ var selectedDate = null;
 
 $(document).ready(function () {
 
-    //$("#app-Timestart").timepicker('getSecondsFromMidnight');
-    $("#app-Timeend").timepicker({ timeFormat: 'h:mm' }).css("z-index", 20);
+    $("#app-Timestart").timepicker({ timeFormat: 'H:mm' }).css("z-index", 20).val("12:00");
+    $("#app-Timeend").timepicker({ timeFormat: 'H:mm' }).css("z-index", 20).val("12:00");
 
     var currentYear = $("#currentYear").val();
 

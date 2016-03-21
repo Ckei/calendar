@@ -5,18 +5,19 @@ using System.Web;
 
 namespace WebCalendar.Business
 {
-    public class DateHelper
+    public class DateTimeHelper
     {
         DateTime date;
         int newMonth = DateTime.Now.Month;
         int newYear = DateTime.Now.Year;
-
         public DateTime getDate { get; set; }
-        public DateHelper(string direction, int month, int year)
+
+        public DateTimeHelper(string direction, int month, int year)
         {
             getDate = NextMonthAndYear(direction,month,year);
         }
-
+        public DateTimeHelper()
+        { }
         private DateTime NextMonthAndYear(string direction, int month, int year)
         {
 
@@ -67,6 +68,30 @@ namespace WebCalendar.Business
                 date = new DateTime(1, 1, 1);
                 return date;
             }
+        }
+
+        public bool TimeOverlap(TimeSpan firststart, TimeSpan firstend, TimeSpan secondstart, TimeSpan secondend)
+        {
+            TimeSpan time = firststart;
+            int hours = 1;
+            int minutes = 1;
+
+            //TODO 
+            while (time != firstend)
+            {
+                if (time.Hours != firstend.Hours)
+                {
+                    time = firststart.Add(TimeSpan.FromHours(hours));
+                    hours++;
+                }
+                else {
+                    
+                    time.Add(TimeSpan.FromMinutes(minutes));
+                    minutes++;
+                }
+            }
+
+            return true;
         }
     }
 }

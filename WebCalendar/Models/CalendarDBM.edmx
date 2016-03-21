@@ -14,8 +14,8 @@
           <Property Name="AppointmentMessage" Type="nvarchar(max)" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="AppointmentColor" Type="nchar" MaxLength="10" />
-          <Property Name="AppointmentStartTime" Type="bigint" />
-          <Property Name="AppointmentEndTime" Type="bigint" />
+          <Property Name="AppointmentStartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="AppointmentEndTime" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -77,8 +77,8 @@
           <Property Name="AppointmentMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="AppointmentColor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="AppointmentStartTime" Type="Int64" />
-          <Property Name="AppointmentEndTime" Type="Int64" />
+          <Property Name="AppointmentStartTime" Type="Time" Precision="7" Nullable="false" />
+          <Property Name="AppointmentEndTime" Type="Time" Precision="7" Nullable="false" />
           <NavigationProperty Name="User" Relationship="UserDatabaseModel.FK_Appointments" FromRole="Appointment" ToRole="User" />
         </EntityType>
         <Association Name="FK_Appointments">

@@ -6,28 +6,39 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <input type="button" id="close-appointment" value="X"/>
+        
         <div id="message-list">
         </div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @Html.HiddenFor(m => m.AppointmentDate, new { id = "post-date" })
         <div class="form-group">
-            <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-12" id="appointment-header">
+                    <input type="button" id="close-appointment" value="X" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
 
-                @Html.TextBoxFor(model => model.AppointmentStartTime, "",  new { id = "app-Timestart" })
+                    @Html.TextBoxFor(model => model.AppointmentStartTime, "", new { id = "app-Timestart" })
+                </div>
+                <div class="col-lg-6">
+                    @Html.TextBoxFor(model => model.AppointmentEndTime, "", new { id = "app-Timeend" })
+                </div>
             </div>
-            <div class="col-lg-6">
-                @Html.TextBoxFor(model => model.AppointmentEndTime, "", new { id = "app-Timeend" })
+            <div class="row">
+                <div class="col-lg-12">
+                    @Html.TextAreaFor(model => model.AppointmentMessage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AppointmentMessage, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.AppointmentMessage, new { htmlAttributes = new { @class = "form-control"} })
-                @Html.ValidationMessageFor(model => model.AppointmentMessage, "", new { @class = "text-danger" })
-            </div>
+           
+           
         </div>
         
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-12">
                 <input type="submit" value="Create" id="create-appointment" class="btn btn-default" name="appButton"  />
                 <input type="submit" value="Edit" id="edit-appointment" class="btn btn-default" name="appButton" />
             </div>

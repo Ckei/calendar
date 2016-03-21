@@ -47,5 +47,10 @@ namespace WebCalendar.Business
            
             return messages;
         }
+
+        public Appointment getCurrentAppointment(string date, string user)
+        {
+            return db.Appointments.Where(a => a.AppointmentDate == date && a.User.Username == user).FirstOrDefault();
+        }
     }
 }

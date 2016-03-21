@@ -31,7 +31,7 @@ namespace WebCalendar.Models
 
         public CalendarViewmodel(string direction, int month, int year)
         {
-            DateHelper date = new DateHelper(direction,month,year);
+            DateTimeHelper date = new DateTimeHelper(direction,month,year);
             StartDay = FirstDayOfMonth(date.getDate.Month,date.getDate.Year);
             DaysOfCurrentMonth = DateTime.DaysInMonth(date.getDate.Year, date.getDate.Month);
             CurrentMonth = printMonth(date.getDate.Month);
@@ -80,5 +80,24 @@ namespace WebCalendar.Models
             return (int)date.DayOfWeek;
         }
 
+        public bool IsAppointmentTimeFree(Appointment appointment, string user)
+        {
+            DateTimeHelper dth = new DateTimeHelper();
+            Appointment ap = new Appointment();
+
+            if (de.AppointmentExists(appointment.AppointmentDate,user))
+            {
+                
+                
+                ap = de.getCurrentAppointment(appointment.AppointmentDate, user);
+                var a = dth.TimeOverlap(appointment.AppointmentStartTime, appointment.AppointmentEndTime,ap.AppointmentStartTime,ap.AppointmentEndTime);
+                return false;
+            }
+            else {
+                var a = dth.TimeOverlap(appointment.AppointmentStartTime, appointment.AppointmentEndTime, ap.AppointmentStartTime, ap.AppointmentEndTime);
+                return true;
+            }
+      
+        }
      }
 }
