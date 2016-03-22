@@ -80,22 +80,19 @@ namespace WebCalendar.Models
             return (int)date.DayOfWeek;
         }
 
-        public bool IsAppointmentTimeFree(Appointment appointment, string user)
+        public bool IsAppointmentTimeFree(Appointment appointment, User user)
         {
             DateTimeHelper dth = new DateTimeHelper();
             Appointment ap = new Appointment();
-
-            if (de.AppointmentExists(appointment.AppointmentDate,user))
+            List<Appointment> currentAppointments = new List<Appointment>();
+            currentAppointments = de.AllAppointments(appointment.AppointmentDate,user);
+            if (de.AppointmentExists(appointment.AppointmentDate,user.Username))
             {
-                
-                
-                ap = de.getCurrentAppointment(appointment.AppointmentDate, user);
-                var a = dth.TimeOverlap(appointment.AppointmentStartTime, appointment.AppointmentEndTime,ap.AppointmentStartTime,ap.AppointmentEndTime);
-                return false;
+                ap = de.getCurrentAppointment(appointment.AppointmentDate, user.Username);
+                return dth.NoTimeOverlap(appointment.AppointmentStartTime, appointment.AppointmentEndTime, currentAppointments);
             }
             else {
-                var a = dth.TimeOverlap(appointment.AppointmentStartTime, appointment.AppointmentEndTime, ap.AppointmentStartTime, ap.AppointmentEndTime);
-                return true;
+                return false;
             }
       
         }

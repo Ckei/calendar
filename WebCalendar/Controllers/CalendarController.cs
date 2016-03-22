@@ -31,16 +31,16 @@ namespace WebCalendar.Controllers
         [HttpPost]
         public ActionResult Appointment(Appointment appointment, string appButton)
         {
+            //TODO: Skapa en Edit och en Create istället för en if else?
             User user = dbe.GetCurrentUser(User.Identity.Name);
 
             if (ModelState.IsValid)
             {
-                if (model.IsAppointmentTimeFree(appointment, user.Username))
+                if (model.IsAppointmentTimeFree(appointment, user))
                 {
                     using (UserDatabaseEntities db = new UserDatabaseEntities())
                     {
-
-                        if (appButton == "Create" && !dbe.AppointmentExists(appointment.AppointmentDate, user.Username))
+                        if (appButton == "Create")
                         {
                             appointment.UserId = user.UserId;
                             db.Appointments.Add(appointment);

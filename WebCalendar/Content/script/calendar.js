@@ -48,7 +48,7 @@ $(document).ready(function () {
             data: { selectDate: selectedDate},
             success: function (response) {
                 if (response != 0) {
-                    $("#create-appointment").hide();
+                    //$("#create-appointment").hide();
                     $("#edit-appointment").show();
 
                     $.each(response, function (index, item) {
@@ -59,7 +59,7 @@ $(document).ready(function () {
 
                     $("#AppointmentMessage").val('');
                     $("#edit-appointment").hide();
-                    $("#create-appointment").show();
+                    //$("#create-appointment").show();
                 }
             },
             error: function()

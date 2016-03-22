@@ -39,18 +39,32 @@ namespace WebCalendar.Business
         {
             List<UserMessages> messages = new List<UserMessages>();
             var AllMessages = db.Appointments.Where(u => u.UserId == user.UserId && u.AppointmentDate == date);
-
-            foreach (var message in AllMessages)
+            if (AllMessages != null)
             {
-                messages.Add(new UserMessages(message.AppointmentDate,message.AppointmentMessage));
-            }
-           
+                foreach (var message in AllMessages)
+                {
+                    messages.Add(new UserMessages(message.AppointmentDate, message.AppointmentMessage));
+                }
+            } 
             return messages;
         }
 
         public Appointment getCurrentAppointment(string date, string user)
         {
             return db.Appointments.Where(a => a.AppointmentDate == date && a.User.Username == user).FirstOrDefault();
+        }
+
+        public List<Appointment> AllAppointments(string date, User user)
+        {
+            List<Appointment> allappointments = new List<Appointment>();
+            var app = db.Appointments.Where(a => a.UserId == user.UserId && a.AppointmentDate == date);
+
+            foreach (var appointment in app)
+            {
+                allappointments.Add(appointment);
+            }
+
+            return allappointments;
         }
     }
 }

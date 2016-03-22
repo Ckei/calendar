@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebCalendar.Models;
 
 namespace WebCalendar.Business
 {
@@ -70,30 +71,61 @@ namespace WebCalendar.Business
             }
         }
 
-        public bool TimeOverlap(TimeSpan firststart, TimeSpan firstend, TimeSpan secondstart, TimeSpan secondend)
+        public bool NoTimeOverlap(TimeSpan firststart, TimeSpan firstend, List<Appointment> apps)
         {
-            TimeSpan time = firststart;
-            int hours = 1;
-            int minutes = 1;
-
-            //TODO 
-            while (time != firstend)
+            foreach (var appointment in apps)
             {
-                if (time.Hours != firstend.Hours)
-                {
-                    time = firststart.Add(TimeSpan.FromHours(hours));
-                    hours++;
-                }
-                else {
-                    
-                    time.Add(TimeSpan.FromMinutes(minutes));
-                    minutes++;
-                }
+                if (firststart < appointment.AppointmentStartTime && firstend > appointment.AppointmentEndTime)
+                    return false;
+                else if (firstend > appointment.AppointmentStartTime && firstend < appointment.AppointmentEndTime)
+                    return false;
+                else if (firststart > appointment.AppointmentStartTime && firststart < appointment.AppointmentEndTime)
+                    return false;
             }
 
             return true;
         }
     }
 }
+
+
+            //if (firststart<secondstart && firstend> secondend)
+            //    return false;
+            //else if (firstend > secondstart && firstend<secondend)
+            //    return false;
+            //else if (firststart > secondstart && firststart<secondend)
+            //    return false;
+            //else
+            //    return true;
+
+
+
+
+
+
+
+
+//TimeSpan time = firststart;
+//int hours = 1;
+//int minutes = 1;
+
+//TODO 
+//while (time != firstend)
+//{
+//    if (time.Hours <= secondstart.Hours && firstend.Hours >= secondend.Hours && time.Minutes
+//        <= secondstart.Minutes && firstend.Minutes >= secondend.Minutes)
+//        return false;
+
+//    if (time.Hours != firststart.Hours)
+//    {
+//        time = firststart.Add(TimeSpan.FromHours(hours));
+//        hours++;
+//    }
+//    else {
+
+//        time.Add(TimeSpan.FromMinutes(minutes));
+//        minutes++;
+//    }
+//}
 
 
